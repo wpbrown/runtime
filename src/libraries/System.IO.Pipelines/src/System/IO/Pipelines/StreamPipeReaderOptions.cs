@@ -19,11 +19,11 @@ namespace System.IO.Pipelines
         /// Creates a new instance of <see cref="StreamPipeReaderOptions"/>.
         /// </summary>
         public StreamPipeReaderOptions(MemoryPool<byte>? pool = null, int bufferSize = -1, int minimumReadSize = -1, bool leaveOpen = false)
-            : this(waitForData: false, pool, bufferSize, minimumReadSize, leaveOpen)
+            : this(pool, bufferSize, minimumReadSize, leaveOpen, waitForData: false)
         {
         }
 
-        public StreamPipeReaderOptions(bool waitForData, MemoryPool<byte>? pool = null, int bufferSize = -1, int minimumReadSize = -1, bool leaveOpen = false)
+        public StreamPipeReaderOptions(MemoryPool<byte>? pool, int bufferSize, int minimumReadSize, bool leaveOpen, bool waitForData)
         {
             Pool = pool ?? MemoryPool<byte>.Shared;
 
