@@ -18,7 +18,7 @@ namespace System.IO.Pipelines
         /// <summary>
         /// Creates a new instance of <see cref="StreamPipeReaderOptions"/>.
         /// </summary>
-        public StreamPipeReaderOptions(MemoryPool<byte>? pool = null, int bufferSize = -1, int minimumReadSize = -1, bool leaveOpen = false)
+        public StreamPipeReaderOptions(MemoryPool<byte>? pool = null, int bufferSize = -1, int minimumReadSize = -1, bool leaveOpen = false, bool waitForData = false)
         {
             Pool = pool ?? MemoryPool<byte>.Shared;
 
@@ -33,6 +33,8 @@ namespace System.IO.Pipelines
                 minimumReadSize;
 
             LeaveOpen = leaveOpen;
+
+            WaitForData = waitForData;
         }
 
         /// <summary>
@@ -54,5 +56,10 @@ namespace System.IO.Pipelines
         /// Leave underlying stream open after pipe reader completes.
         /// </summary>
         public bool LeaveOpen { get; }
+
+        /// <summary>
+        /// If no data is buffered, waits for data is available on the underlying <see cref="Stream"/> before allocating more memory.
+        /// </summary>
+        public bool WaitForData { get; }
     }
 }

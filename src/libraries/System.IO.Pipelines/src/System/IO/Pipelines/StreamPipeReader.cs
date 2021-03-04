@@ -32,6 +32,7 @@ namespace System.IO.Pipelines
         // Mutable struct! Don't make this readonly
         private BufferSegmentStack _bufferSegmentPool;
         private readonly bool _leaveOpen;
+        private readonly bool _waitForData;
 
         /// <summary>
         /// Creates a new StreamPipeReader.
@@ -52,6 +53,7 @@ namespace System.IO.Pipelines
             _pool = options.Pool == MemoryPool<byte>.Shared ? null : options.Pool;
             _bufferSize = _pool == null ? options.BufferSize : Math.Min(options.BufferSize, _pool.MaxBufferSize);
             _leaveOpen = options.LeaveOpen;
+            _waitForData = options.WaitForData;
         }
 
         /// <summary>
@@ -215,6 +217,13 @@ namespace System.IO.Pipelines
                 var isCanceled = false;
                 try
                 {
+                    // This optimization only makes sense if we don't have anything buffered
+                    if (_waitForData && _bufferedBytes == 0)
+                    {
+                        // Wait for data by doing 0 byte read before
+                        await InnerStream.ReadAsync(Memory<byte>.Empty, cancellationToken).ConfigureAwait(false);
+                    }
+
                     AllocateReadTail();
 
                     Memory<byte> buffer = _readTail!.AvailableMemory.Slice(_readTail.End);
@@ -296,7 +305,7 @@ namespace System.IO.Pipelines
 
         private ReadOnlySequence<byte> GetCurrentReadOnlySequence()
         {
-            Debug.Assert(_readHead != null &&_readTail != null);
+            Debug.Assert(_readHead != null && _readTail != null);
             return new ReadOnlySequence<byte>(_readHead, _readIndex, _readTail, _readTail.End);
         }
 
