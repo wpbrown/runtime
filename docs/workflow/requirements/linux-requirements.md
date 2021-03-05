@@ -57,3 +57,13 @@ libssl-dev libnuma-dev libkrb5-dev zlib1g-dev ninja-build
 ```
 
 You now have all the required components.
+
+### Ubuntu 20.04 LTS
+
+While 16.04/18.04 LTS is the current reference configuration, Ubuntu 20.04 can be used for testing and development.
+
+```
+sudo apt-get install -y cmake llvm clang libtool \
+build-essential git libicu-dev liblttng-ust-dev \
+libssl-dev libkrb5-dev zlib1g-dev ninja-build
+```
