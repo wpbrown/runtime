@@ -16,12 +16,12 @@ If you want to use a faster method, you may want to use one of these walkthrough
 All paths in examples below are Windows-style but the procedure is otherwise exactly the same on Unix.
 
 1. Successfully built this repository including the shared framework package and thus have files of the form shown below. From now on we call this folder your NuGet package folder.
-
-```
+   
+   ```
     <your-repo-root>\artifacts\packages\<configuration>\Shipping\
-```
+   ```
 
-If you don't have this folder, you may have built binaries but not packages. Try building from the root with a command like `build.cmd clr+libs+host+packs -c release`.
+   If you don't have this folder, you may have built binaries but not packages. Try building from the root with a command like `build.cmd clr+libs+host+packs -c release`. If you are building from a tagged release commit you will not have the `-dev` suffix in your packages. You can force the `-dev` suffix (or a different custom `VersionSuffix`) by adding `/p:VersionSuffix=dev /p:DotNetFinalVersionKind=development` to your `build.cmd` line.
 
 2. Acquired the latest nightly .NET SDK from [here](https://github.com/dotnet/installer) and added its root folder to your [path](requirements/windows-requirements.md#adding-to-the-default-path-variable)
 
